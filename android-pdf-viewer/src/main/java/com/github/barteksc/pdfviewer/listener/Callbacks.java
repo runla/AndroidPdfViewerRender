@@ -17,8 +17,6 @@ package com.github.barteksc.pdfviewer.listener;
 
 import android.view.MotionEvent;
 
-import com.github.barteksc.pdfviewer.link.LinkHandler;
-import com.github.barteksc.pdfviewer.model.LinkTapEvent;
 
 public class Callbacks {
 
@@ -69,10 +67,6 @@ public class Callbacks {
      */
     private OnLongPressListener onLongPressListener;
 
-    /**
-     * Call back object to call when clicking link
-     */
-    private LinkHandler linkHandler;
 
     public void setOnLoadComplete(OnLoadCompleteListener onLoadCompleteListener) {
         this.onLoadCompleteListener = onLoadCompleteListener;
@@ -168,13 +162,5 @@ public class Callbacks {
         }
     }
 
-    public void setLinkHandler(LinkHandler linkHandler) {
-        this.linkHandler = linkHandler;
-    }
 
-    public void callLinkHandler(LinkTapEvent event) {
-        if (linkHandler != null) {
-            linkHandler.handleLinkEvent(event);
-        }
-    }
 }

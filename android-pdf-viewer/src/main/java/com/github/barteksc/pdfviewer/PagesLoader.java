@@ -16,11 +16,13 @@
 package com.github.barteksc.pdfviewer;
 
 import android.graphics.RectF;
+import android.util.Log;
 
+import com.github.barteksc.pdfviewer.model.SizeF;
 import com.github.barteksc.pdfviewer.util.Constants;
 import com.github.barteksc.pdfviewer.util.MathUtils;
 import com.github.barteksc.pdfviewer.util.Util;
-import com.shockwave.pdfium.util.SizeF;
+
 
 import java.util.LinkedList;
 import java.util.List;
@@ -238,13 +240,13 @@ class PagesLoader {
             loadThumbnail(range.page);
         }
 
-        for (RenderRange range : rangeList) {
-            calculatePartSize(range.gridSize);
-            parts += loadPage(range.page, range.leftTop.row, range.rightBottom.row, range.leftTop.col, range.rightBottom.col, CACHE_SIZE - parts);
-            if (parts >= CACHE_SIZE) {
-                break;
-            }
-        }
+//        for (RenderRange range : rangeList) {
+//            calculatePartSize(range.gridSize);
+//            parts += loadPage(range.page, range.leftTop.row, range.rightBottom.row, range.leftTop.col, range.rightBottom.col, CACHE_SIZE - parts);
+//            if (parts >= CACHE_SIZE) {
+//                break;
+//            }
+//        }
 
     }
 
@@ -284,11 +286,12 @@ class PagesLoader {
         RectF pageRelativeBounds = new RectF(relX, relY, relX + relWidth, relY + relHeight);
 
         if (renderWidth > 0 && renderHeight > 0) {
-            if (!pdfView.cacheManager.upPartIfContained(page, pageRelativeBounds, cacheOrder)) {
-                pdfView.renderingHandler.addRenderingTask(page, renderWidth, renderHeight,
-                        pageRelativeBounds, false, cacheOrder, pdfView.isBestQuality(),
-                        pdfView.isAnnotationRendering());
-            }
+            Log.d("RenderingHandler", "loadCell:  " + page + " " + row + " " + col + " " + renderWidth + " " + renderHeight);
+//            if (!pdfView.cacheManager.upPartIfContained(page, pageRelativeBounds, cacheOrder)) {
+//                pdfView.renderingHandler.addRenderingTask(page, renderWidth, renderHeight,
+//                        pageRelativeBounds, false, cacheOrder, pdfView.isBestQuality(),
+//                        pdfView.isAnnotationRendering());
+//            }
 
             cacheOrder++;
             return true;
@@ -300,11 +303,11 @@ class PagesLoader {
         SizeF pageSize = pdfView.pdfFile.getPageSize(page);
         float thumbnailWidth = pageSize.getWidth() * Constants.THUMBNAIL_RATIO;
         float thumbnailHeight = pageSize.getHeight() * Constants.THUMBNAIL_RATIO;
-        if (!pdfView.cacheManager.containsThumbnail(page, thumbnailRect)) {
-            pdfView.renderingHandler.addRenderingTask(page,
-                    thumbnailWidth, thumbnailHeight, thumbnailRect,
-                    true, 0, pdfView.isBestQuality(), pdfView.isAnnotationRendering());
-        }
+
+        Log.d("RenderingHandler", "loadThumbnail:  " + page + " " + thumbnailWidth + " " + thumbnailHeight);
+        pdfView.renderingHandler.addRenderingTask(page,
+                thumbnailWidth, thumbnailHeight, thumbnailRect,
+                true, 0, pdfView.isBestQuality(), pdfView.isAnnotationRendering());
     }
 
     void loadPages() {

@@ -28,6 +28,8 @@ import android.util.Log;
 import com.github.barteksc.pdfviewer.exception.PageRenderingException;
 import com.github.barteksc.pdfviewer.model.PagePart;
 
+import java.util.logging.Logger;
+
 /**
  * A {@link Handler} that will process incoming {@link RenderingTask} messages
  * and alert {@link PDFView#onBitmapRendered(PagePart)} when the portion of the
@@ -88,26 +90,24 @@ class RenderingHandler extends Handler {
 
     private PagePart proceed(RenderingTask renderingTask) throws PageRenderingException {
         PdfFile pdfFile = pdfView.pdfFile;
-        pdfFile.openPage(renderingTask.page);
 
         int w = Math.round(renderingTask.width);
         int h = Math.round(renderingTask.height);
 
-        if (w == 0 || h == 0 || pdfFile.pageHasError(renderingTask.page)) {
+        if (w == 0 || h == 0) {
             return null;
         }
 
         Bitmap render;
         try {
-            render = Bitmap.createBitmap(w, h, renderingTask.bestQuality ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
+            render = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         } catch (IllegalArgumentException e) {
             Log.e(TAG, "Cannot create bitmap", e);
             return null;
         }
         calculateBounds(w, h, renderingTask.bounds);
-
         pdfFile.renderPageBitmap(render, renderingTask.page, roundedRenderBounds, renderingTask.annotationRendering);
-
+        
         return new PagePart(renderingTask.page, render,
                 renderingTask.bounds, renderingTask.thumbnail,
                 renderingTask.cacheOrder);

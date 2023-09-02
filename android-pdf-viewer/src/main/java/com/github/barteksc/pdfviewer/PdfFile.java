@@ -17,22 +17,17 @@ package com.github.barteksc.pdfviewer;
 
 import android.graphics.Bitmap;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.util.SparseBooleanArray;
 
-import com.github.barteksc.pdfviewer.exception.PageRenderingException;
+import com.github.barteksc.pdfviewer.model.Size;
+import com.github.barteksc.pdfviewer.model.SizeF;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
 import com.github.barteksc.pdfviewer.util.PageSizeCalculator;
-import com.shockwave.pdfium.PdfDocument;
-import com.shockwave.pdfium.PdfiumCore;
-import com.shockwave.pdfium.util.Size;
-import com.shockwave.pdfium.util.SizeF;
-
 import java.util.ArrayList;
 import java.util.List;
 
 class PdfFile {
-
+    private static final String TAG = "PdfFile";
     private static final Object lock = new Object();
     private PdfDocument pdfDocument;
     private PdfiumCore pdfiumCore;
@@ -264,26 +259,6 @@ class PdfFile {
         return --currentPage >= 0 ? currentPage : 0;
     }
 
-    public boolean openPage(int pageIndex) throws PageRenderingException {
-        int docPage = documentPage(pageIndex);
-        if (docPage < 0) {
-            return false;
-        }
-
-        synchronized (lock) {
-            if (openedPages.indexOfKey(docPage) < 0) {
-                try {
-                    pdfiumCore.openPage(pdfDocument, docPage);
-                    openedPages.put(docPage, true);
-                    return true;
-                } catch (Exception e) {
-                    openedPages.put(docPage, false);
-                    throw new PageRenderingException(pageIndex, e);
-                }
-            }
-            return false;
-        }
-    }
 
     public boolean pageHasError(int pageIndex) {
         int docPage = documentPage(pageIndex);
@@ -296,30 +271,6 @@ class PdfFile {
                 bounds.left, bounds.top, bounds.width(), bounds.height(), annotationRendering);
     }
 
-    public PdfDocument.Meta getMetaData() {
-        if (pdfDocument == null) {
-            return null;
-        }
-        return pdfiumCore.getDocumentMeta(pdfDocument);
-    }
-
-    public List<PdfDocument.Bookmark> getBookmarks() {
-        if (pdfDocument == null) {
-            return new ArrayList<>();
-        }
-        return pdfiumCore.getTableOfContents(pdfDocument);
-    }
-
-    public List<PdfDocument.Link> getPageLinks(int pageIndex) {
-        int docPage = documentPage(pageIndex);
-        return pdfiumCore.getPageLinks(pdfDocument, docPage);
-    }
-
-    public RectF mapRectToDevice(int pageIndex, int startX, int startY, int sizeX, int sizeY,
-                                 RectF rect) {
-        int docPage = documentPage(pageIndex);
-        return pdfiumCore.mapRectToDevice(pdfDocument, docPage, startX, startY, sizeX, sizeY, 0, rect);
-    }
 
     public void dispose() {
         if (pdfiumCore != null && pdfDocument != null) {

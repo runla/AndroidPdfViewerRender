@@ -30,12 +30,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.PdfDocument;
 import com.github.barteksc.pdfviewer.listener.OnLoadCompleteListener;
 import com.github.barteksc.pdfviewer.listener.OnPageChangeListener;
 import com.github.barteksc.pdfviewer.listener.OnPageErrorListener;
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle;
 import com.github.barteksc.pdfviewer.util.FitPolicy;
-import com.shockwave.pdfium.PdfDocument;
+
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -176,17 +177,17 @@ public class PDFViewActivity extends AppCompatActivity implements OnPageChangeLi
 
     @Override
     public void loadComplete(int nbPages) {
-        PdfDocument.Meta meta = pdfView.getDocumentMeta();
-        Log.e(TAG, "title = " + meta.getTitle());
-        Log.e(TAG, "author = " + meta.getAuthor());
-        Log.e(TAG, "subject = " + meta.getSubject());
-        Log.e(TAG, "keywords = " + meta.getKeywords());
-        Log.e(TAG, "creator = " + meta.getCreator());
-        Log.e(TAG, "producer = " + meta.getProducer());
-        Log.e(TAG, "creationDate = " + meta.getCreationDate());
-        Log.e(TAG, "modDate = " + meta.getModDate());
-
-        printBookmarksTree(pdfView.getTableOfContents(), "-");
+//        PdfDocument.Meta meta = pdfView.getDocumentMeta();
+//        Log.e(TAG, "title = " + meta.getTitle());
+//        Log.e(TAG, "author = " + meta.getAuthor());
+//        Log.e(TAG, "subject = " + meta.getSubject());
+//        Log.e(TAG, "keywords = " + meta.getKeywords());
+//        Log.e(TAG, "creator = " + meta.getCreator());
+//        Log.e(TAG, "producer = " + meta.getProducer());
+//        Log.e(TAG, "creationDate = " + meta.getCreationDate());
+//        Log.e(TAG, "modDate = " + meta.getModDate());
+//
+//        printBookmarksTree(pdfView.getTableOfContents(), "-");
 
     }
 

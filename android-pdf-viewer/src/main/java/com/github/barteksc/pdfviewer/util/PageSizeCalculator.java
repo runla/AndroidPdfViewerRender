@@ -15,8 +15,9 @@
  */
 package com.github.barteksc.pdfviewer.util;
 
-import com.shockwave.pdfium.util.Size;
-import com.shockwave.pdfium.util.SizeF;
+
+import com.github.barteksc.pdfviewer.model.Size;
+import com.github.barteksc.pdfviewer.model.SizeF;
 
 public class PageSizeCalculator {
 
