@@ -37,7 +37,7 @@ public class Constants {
         /** The size of the cache (number of bitmaps kept) */
         public static int CACHE_SIZE = 120;
 
-        public static int THUMBNAILS_CACHE_SIZE = 10;
+        public static int THUMBNAILS_CACHE_SIZE = 8;
     }
 
     public static class Pinch {

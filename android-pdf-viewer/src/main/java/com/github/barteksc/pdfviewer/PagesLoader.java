@@ -132,6 +132,8 @@ class PagesLoader {
 
         int firstPage = pdfView.pdfFile.getPageAtOffset(offsetFirst, pdfView.getZoom());
         int lastPage = pdfView.pdfFile.getPageAtOffset(offsetLast, pdfView.getZoom());
+        firstPage = MathUtils.min(firstPage - 1, 0);
+        lastPage = MathUtils.max(lastPage + 1, pdfView.getPageCount() - 1);
         int pageCount = lastPage - firstPage + 1;
 
         List<RenderRange> renderRanges = new LinkedList<>();
@@ -304,10 +306,11 @@ class PagesLoader {
         float thumbnailWidth = pageSize.getWidth() * Constants.THUMBNAIL_RATIO;
         float thumbnailHeight = pageSize.getHeight() * Constants.THUMBNAIL_RATIO;
 
-        Log.d("RenderingHandler", "loadThumbnail:  " + page + " " + thumbnailWidth + " " + thumbnailHeight);
-        pdfView.renderingHandler.addRenderingTask(page,
-                thumbnailWidth, thumbnailHeight, thumbnailRect,
-                true, 0, pdfView.isBestQuality(), pdfView.isAnnotationRendering());
+        if (!pdfView.cacheManager.containsThumbnail(page, thumbnailRect)) {
+            pdfView.renderingHandler.addRenderingTask(page,
+                    thumbnailWidth, thumbnailHeight, thumbnailRect,
+                    true, 0, pdfView.isBestQuality(), pdfView.isAnnotationRendering());
+        }
     }
 
     void loadPages() {
