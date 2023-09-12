@@ -102,9 +102,9 @@ public class Callbacks {
         this.onRenderListener = onRenderListener;
     }
 
-    public void callOnRender(int pagesCount) {
+    public void callOnRender(int pagesCount, float pageWidth, float pageHeight) {
         if (onRenderListener != null) {
-            onRenderListener.onInitiallyRendered(pagesCount);
+            onRenderListener.onInitiallyRendered(pagesCount, pageWidth, pageHeight);
         }
     }
 

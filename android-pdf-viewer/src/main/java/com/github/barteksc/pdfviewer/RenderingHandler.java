@@ -63,7 +63,7 @@ class RenderingHandler extends Handler {
 
     @Override
     public void handleMessage(Message message) {
-        RenderingTask task = (RenderingTask) message.obj;
+        final RenderingTask task = (RenderingTask) message.obj;
         try {
             final PagePart part = proceed(task);
             if (part != null) {
@@ -71,7 +71,7 @@ class RenderingHandler extends Handler {
                     pdfView.post(new Runnable() {
                         @Override
                         public void run() {
-                            pdfView.onBitmapRendered(part);
+                            pdfView.onBitmapRendered(part, task.width, task.height);
                         }
                     });
                 } else {

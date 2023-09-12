@@ -788,11 +788,11 @@ public class PDFView extends RelativeLayout {
      *
      * @param part The created PagePart.
      */
-    public void onBitmapRendered(PagePart part) {
+    public void onBitmapRendered(PagePart part, float width, float height) {
         // when it is first rendered part
         if (state == State.LOADED) {
             state = State.SHOWN;
-            callbacks.callOnRender(pdfFile.getPagesCount());
+            callbacks.callOnRender(pdfFile.getPagesCount(), width, height);
         }
 
         if (part.isThumbnail()) {
